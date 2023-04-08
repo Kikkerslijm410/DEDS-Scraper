@@ -7,10 +7,11 @@ headers = {
 }
 
 with open('bever_products.csv', 'w', newline='') as csvfile:
-    fieldnames = ['name', 'price', 'description']
+    fieldnames = ['name', 'price', 'url']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
 
+    # loop through all pages
     for page in range(0,5):
         url = f'https://www.bever.nl/c/uitrusting/rugzakken/wandelrugzakken.html?p=2&size=48&page={page}'
         response = requests.get(url, headers=headers)
@@ -18,7 +19,15 @@ with open('bever_products.csv', 'w', newline='') as csvfile:
 
         product_tags = soup.find_all('div', {'class': 'as-m-product-tile'})
 
+        # loop through all products
         for tag in product_tags:
             name = tag.find('div', {'class': 'as-m-product-tile__title-wrapper'}).text.strip()
             price = tag.find('div', {'class': 'as-a-price__value as-a-price__value--sell'}).text.strip()
-            writer.writerow({'name': name, 'price': price})
+            url = tag.find('a', {'class': 'as-m-product-tile__link'})['href']
+            
+            # response = requests.get(url, headers=headers)
+            # soup = BeautifulSoup(response.content, 'html.parser')
+            # review_tags = soup.find_all('div', {'class': 'bv-content-item'})
+
+            # write to csv
+            writer.writerow({'name': name, 'price': price, 'url': url})

@@ -7,7 +7,7 @@ headers = {
 }
 
 with open('bever_products.csv', 'w', newline='') as csvfile:
-    fieldnames = ['name', 'price', 'url']
+    fieldnames = ['name', 'price', 'url', 'review']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
 
@@ -24,10 +24,15 @@ with open('bever_products.csv', 'w', newline='') as csvfile:
             name = tag.find('div', {'class': 'as-m-product-tile__title-wrapper'}).text.strip()
             price = tag.find('div', {'class': 'as-a-price__value as-a-price__value--sell'}).text.strip()
             url = tag.find('a', {'class': 'as-m-product-tile__link'})['href']
+            visit_url = f'https://www.bever.nl{url}'
             
-            # response = requests.get(url, headers=headers)
-            # soup = BeautifulSoup(response.content, 'html.parser')
-            # review_tags = soup.find_all('div', {'class': 'bv-content-item'})
+            response = requests.get(visit_url, headers=headers)
+            soup = BeautifulSoup(response.content, 'html.parser')
+            review_tags = soup.find_all('div', {'class': 'an_hy'})
 
-            # write to csv
-            writer.writerow({'name': name, 'price': price, 'url': url})
+            # loop through all reviews
+            for tag in review_tags:
+                review = tag.find('div', {'class': 'as_lt'}).text.strip()
+
+                # write to csv
+                writer.writerow({'name': name, 'price': price, 'url': url, 'review': review})

@@ -35,4 +35,4 @@ with open('bever_products.csv', 'w', newline='') as csvfile:
                 review = tag.find('div', {'class': 'as_lt'}).text.strip()
 
                 # write to csv
-                writer.writerow({'name': name, 'price': price, 'url': url, 'review': review})
+                writer.writerow({'name': name, 'price': price, 'url': visit_url, 'review': review})

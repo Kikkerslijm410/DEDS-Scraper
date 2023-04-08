@@ -13,7 +13,7 @@ with open('bever_products.csv', 'w', newline='') as csvfile:
 
     # loop through all pages
     for page in range(0,5):
-        url = f'https://www.bever.nl/c/uitrusting/rugzakken/wandelrugzakken.html?p=2&size=48&page={page}'
+        url = f'https://www.bever.nl/c/uitrusting/rugzakken/wandelrugzakken.html?size=48&page={page}'
         response = requests.get(url, headers=headers)
         soup = BeautifulSoup(response.content, 'html.parser')
 
@@ -28,11 +28,16 @@ with open('bever_products.csv', 'w', newline='') as csvfile:
             
             response = requests.get(visit_url, headers=headers)
             soup = BeautifulSoup(response.content, 'html.parser')
-            review_tags = soup.find_all('div', {'class': 'an_hy'})
-
+            review_tags = soup.find_all('div', {'class': 'as-m-popover as-m-popover--drawer-large as-m-popover--no-arrow as-m-popover--drawer as-m-popover--animated as-m-popover--hidden as-m-popover--always-render cotopaxi-popover-modal'})
+            # print(review_tags)
+            # span class="as-a-text as-a-text--s glossary-highlight
             # loop through all reviews
             for tag in review_tags:
-                review = tag.find('div', {'class': 'as_lt'}).text.strip()
-
-                # write to csv
-                writer.writerow({'name': name, 'price': price, 'url': visit_url, 'review': review})
+                review_tag = tag.find('span', {'class': 'as-a-text'})
+                if review_tag:
+                    review = review_tag.text.strip()
+                else:
+                    review = "Geen reviews"
+                print (review)
+                # write to csv , 'review': review
+            writer.writerow({'name': name, 'price': price, 'url': url, 'review': review})

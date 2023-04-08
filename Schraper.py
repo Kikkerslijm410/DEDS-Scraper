@@ -6,7 +6,7 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
 }
 
-with open('bever_products.csv', 'w', newline='') as csvfile:
+with open('bever_reviews.csv', 'w', newline='') as csvfile:
     fieldnames = ['name', 'price', 'url', 'review']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
@@ -28,9 +28,8 @@ with open('bever_products.csv', 'w', newline='') as csvfile:
             
             response = requests.get(visit_url, headers=headers)
             soup = BeautifulSoup(response.content, 'html.parser')
-            review_tags = soup.find_all('div', {'class': 'as-m-popover as-m-popover--drawer-large as-m-popover--no-arrow as-m-popover--drawer as-m-popover--animated as-m-popover--hidden as-m-popover--always-render cotopaxi-popover-modal'})
-            # print(review_tags)
-            # span class="as-a-text as-a-text--s glossary-highlight
+            review_tags = soup.find_all('div', {'id': 'product_detail_tab_reviews'})
+            print(review_tags)
             # loop through all reviews
             for tag in review_tags:
                 review_tag = tag.find('span', {'class': 'as-a-text'})
@@ -38,6 +37,5 @@ with open('bever_products.csv', 'w', newline='') as csvfile:
                     review = review_tag.text.strip()
                 else:
                     review = "Geen reviews"
-                print (review)
-                # write to csv , 'review': review
-            writer.writerow({'name': name, 'price': price, 'url': url, 'review': review})
+                # print (review)
+                writer.writerow({'name': name, 'price': price, 'url': url, 'review': review})

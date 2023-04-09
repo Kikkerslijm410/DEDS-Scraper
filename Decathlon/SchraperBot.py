@@ -7,7 +7,7 @@ headers = {
 }
 
 with open('Decathlon_com_reviews.csv', 'w', newline='') as csvfile:
-    fieldnames = ['name', 'price', 'url']
+    fieldnames = ['name', 'price', 'url', 'review']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
 
@@ -26,3 +26,13 @@ with open('Decathlon_com_reviews.csv', 'w', newline='') as csvfile:
             price = price_tag.text.strip()            
             url = tag.find('a', {'class': 'dpb-product-model-link'})['href']
             writer.writerow({'name': name, 'price': price, 'url': url})
+            
+            # Ga naar de website om te kijken of er reviews zijn
+            visit_url = f'https://www.decathlon.nl{url}'
+            response = requests.get(visit_url)
+            soup = BeautifulSoup(response.content, 'html.parser')
+            review_tags = soup.find_all('div', {'class': 'review__body'})
+
+            for review_tag in review_tags:
+                review = review_tag.text.strip()
+                writer.writerow({'name': name, 'review': review})

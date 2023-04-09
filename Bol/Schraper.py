@@ -12,7 +12,7 @@ with open('Bol_com_reviews.csv', 'w', newline='') as csvfile:
     writer.writeheader()
 
     # loop through all pages
-    for page in range(1,500):
+    for page in range(1,5):
         url = f'https://www.bol.com/nl/nl/l/rugzakken/20701/?page={page}'
         response = requests.get(url, headers=headers)
         soup = BeautifulSoup(response.content, 'html.parser')
@@ -21,5 +21,5 @@ with open('Bol_com_reviews.csv', 'w', newline='') as csvfile:
 
         for tag in product_tags:
             name = tag.find('span', {'class': 'truncate'}).text.strip()
-            # price = tag.find('div', {'class': 'product-prices'}).find('span', {'class': 'sr-only'}).next_sibling.strip()
-            writer.writerow({'name': name})
+            price = soup.find('meta', {'itemprop': 'price'})['content']
+            writer.writerow({'name': name, 'price': price})

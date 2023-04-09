@@ -1,2 +1,2 @@
-# Ignore geckodriver
-/geckodriver.log
+# Ignore pycache
+__pycache__/

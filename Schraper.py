@@ -1,6 +1,10 @@
 import requests
-from bs4 import BeautifulSoup
 import csv
+from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
@@ -10,6 +14,7 @@ with open('bever_reviews.csv', 'w', newline='') as csvfile:
     fieldnames = ['name', 'price', 'url', 'review']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
+    driver = webdriver.Firefox()
 
     # loop through all pages
     for page in range(0,5):
@@ -25,17 +30,34 @@ with open('bever_reviews.csv', 'w', newline='') as csvfile:
             price = tag.find('div', {'class': 'as-a-price__value as-a-price__value--sell'}).text.strip()
             url = tag.find('a', {'class': 'as-m-product-tile__link'})['href']
             visit_url = f'https://www.bever.nl{url}'
-            
+
+            # Ga naar de website om te kijken of er reviews zijn
             response = requests.get(visit_url, headers=headers)
             soup = BeautifulSoup(response.content, 'html.parser')
             review_tags = soup.find_all('div', {'id': 'product_detail_tab_reviews'})
-            print(review_tags)
-            # loop through all reviews
-            for tag in review_tags:
-                review_tag = tag.find('span', {'class': 'as-a-text'})
-                if review_tag:
-                    review = review_tag.text.strip()
-                else:
-                    review = "Geen reviews"
-                # print (review)
-                writer.writerow({'name': name, 'price': price, 'url': url, 'review': review})
+            
+            # Kijk of er reviews zijn
+            if not review_tags:
+                continue
+            # Navigeer naar de website
+            driver.get(visit_url)
+
+            # Klik op de knop om cookies te accepteren
+            driver.find_element(By.ID, 'accept-all-cookies').click()
+
+            # Vind de element door de ID te gebruiken en wacht tot het klikbaar is
+            reviews_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "product_detail_tab_reviews")))
+
+            # Klik op de knop om de pop-up met beoordelingen te openen
+            reviews_button.click()
+
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "as-l-reviews__item")))
+
+            # Scrap alle reviews en schrijf ze naar de csv file
+            reviews = driver.find_elements_by_class_name("as-l-reviews__item")
+            for review in reviews:
+                review_text = review.find_element_by_class_name("as-l-reviews__item-text").text.strip()
+                writer.writerow({'name': name, 'price': price, 'url': visit_url, 'review': review_text})
+
+    # Sluit de browser
+    driver.quit()

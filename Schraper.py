@@ -21,7 +21,6 @@ with open('bever_reviews.csv', 'w', newline='') as csvfile:
         url = f'https://www.bever.nl/c/uitrusting/rugzakken/wandelrugzakken.html?size=48&page={page}'
         response = requests.get(url, headers=headers)
         soup = BeautifulSoup(response.content, 'html.parser')
-
         product_tags = soup.find_all('div', {'class': 'as-m-product-tile'})
 
         # loop through all products
@@ -39,6 +38,7 @@ with open('bever_reviews.csv', 'w', newline='') as csvfile:
             # Kijk of er reviews zijn
             if not review_tags:
                 continue
+
             # Navigeer naar de website
             driver.get(visit_url)
 
@@ -50,11 +50,10 @@ with open('bever_reviews.csv', 'w', newline='') as csvfile:
 
             # Klik op de knop om de pop-up met beoordelingen te openen
             reviews_button.click()
+            
+            # Scrape alle reviews en schrijf ze naar een csv file
+            reviews = BeautifulSoup(driver.page_source, 'html.parser').find_all('span', {'class': 'as_lt'})
 
-            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "as-l-reviews__item")))
-
-            # Scrap alle reviews en schrijf ze naar de csv file
-            reviews = driver.find_elements_by_class_name("as-l-reviews__item")
             for review in reviews:
                 review_text = review.find_element_by_class_name("as-l-reviews__item-text").text.strip()
                 writer.writerow({'name': name, 'price': price, 'url': visit_url, 'review': review_text})

@@ -18,15 +18,16 @@ with open('Decathlon_com_reviews.csv', 'w', newline='', encoding='utf-8') as csv
         soup = BeautifulSoup(response.content, 'html.parser')
 
         product_tags = soup.find_all('div', {'class': 'product-block-top-main'})
-
+        print (product_tags)
         for tag in product_tags:
             name = tag.find('h2', {'class': 'vtmn-p-0'}).text.strip()
             url = tag.find('a', {'class': 'dpb-product-model-link'})['href']
             
             visit_url = f'https://www.decathlon.nl{url}'
+            
             response2 = requests.get(visit_url)
             review_soup = BeautifulSoup(response2.content, 'html.parser')
-            review_tags = review_soup.find_all('p', {'class': 'answer-body'})
+            review_tags = review_soup.find_all('p', {'class': 'answer-body svelte-1v1nczs'})
 
             for review_tag in review_tags:	
                 review = review_tag.text.strip()

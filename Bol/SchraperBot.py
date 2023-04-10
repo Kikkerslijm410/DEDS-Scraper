@@ -20,16 +20,14 @@ with open('Bol_com_reviews.csv', 'w', newline='', encoding='utf-8') as csvfile:
         product_tags = soup.find_all('li', {'class': 'product-item--column'})
 
         for tag in product_tags:
-            # Scrape de naam, prijs en url van het product
             name = tag.find('span', {'class': 'truncate'}).text.strip()
             url = tag.find('a', {'class': 'hit-area-listpage'})['href']
             
-            # Ga naar de website om te kijken of er reviews zijn
             visit_url = f'https://www.bol.com{url}'
             response = requests.get(visit_url)
             soup = BeautifulSoup(response.content, 'html.parser')
             review_tags = soup.find_all('div', {'class': 'review__body'})
 
-            for review_tag in review_tags:
+            for review_tag in review_tags:	
                 review = review_tag.text.strip()
                 writer.writerow({'name': name, 'review': review})

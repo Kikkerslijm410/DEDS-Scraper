@@ -7,7 +7,7 @@ headers = {
 }
 
 with open('Decathlon_com_reviews.csv', 'w', newline='', encoding='utf-8') as csvfile:
-    fieldnames = ['name', 'price', 'url', 'review']
+    fieldnames = ['name', 'review']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
 
@@ -21,30 +21,14 @@ with open('Decathlon_com_reviews.csv', 'w', newline='', encoding='utf-8') as csv
 
         for tag in product_tags:
             name = tag.find('h2', {'class': 'vtmn-p-0'}).text.strip()
-            # price_tag = soup.find('span', {'class': 'vtmn-price'})
-            # price = price_tag.text.strip()
             url = tag.find('a', {'class': 'dpb-product-model-link'})['href']
-
+            
             visit_url = f'https://www.decathlon.nl{url}'
-            response = requests.get(visit_url, headers=headers)
-            soup = BeautifulSoup(response.content, 'html.parser')
-            review_link = soup.find('a', text='Toon alle reviews')
-            print (review_link)
-            # review_link = soup2.find('a', {'class': 'cta'})
-            # print (review_link)
-            # url2 = tag.find('a', {'class': 'cta cta--alt'})['href']
-            # print(url2)
-            
-            
-            
-            # print (review_link)
-            # if review_link is not None:
-            #     url2 = review_link['href']
-            #     visit_url2 = f'https://www.decathlon.nl{url2}'
-            #     response = requests.get(visit_url2, headers=headers)
-            #     soup3 = BeautifulSoup(response.content, 'html.parser')
-            #     # review_tags = soup3.find_all('p', {'class': 'answer-body'})
-            #     # for review_tag in review_tags:
-            #     #     review = review_tag.text.strip()
-            #     writer.writerow({'name': name, 'review': url2})
+            response2 = requests.get(visit_url)
+            review_soup = BeautifulSoup(response2.content, 'html.parser')
+            review_tags = review_soup.find_all('p', {'class': 'answer-body'})
+
+            for review_tag in review_tags:	
+                review = review_tag.text.strip()
+                writer.writerow({'name': name, 'review': review})
 

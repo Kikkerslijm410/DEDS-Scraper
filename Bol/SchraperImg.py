@@ -11,7 +11,7 @@ headers = {
 if not os.path.exists('images'):
     os.makedirs('images')
 
-with open('Bol_com_reviews.csv', 'w', newline='', encoding='utf-16') as csvfile:
+with open('Bol_com_images.csv', 'w', newline='', encoding='utf-16') as csvfile:
     fieldnames = ['name', 'price', 'url', 'image']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
@@ -32,17 +32,20 @@ with open('Bol_com_reviews.csv', 'w', newline='', encoding='utf-16') as csvfile:
             response = requests.get(visit_url)
             soup = BeautifulSoup(response.content, 'html.parser')
             image = soup.find('img', {'class': 'js_selected_image'})['src']
-            EANcode = soup.find_all('dd', {'class': 'specs__value'})[7].text.strip() 
-            
-            # Download the image and save it to a file
-            image_response = requests.get(image)
-            with open(f'images/{EANcode}.jpg', 'wb') as f:
-                f.write(image_response.content)
-            # needs a uniqe code without / and spaces
+
+            # Get the EAN code (loops through all the dt tags and checks if the text is EAN)
+            for tag in soup.find_all('dt', {'class': 'specs__title'}):
+                if tag.text.strip() == 'EAN':
+                    EANcode = tag.find_next_sibling('dd', {'class': 'specs__value'}).text.strip()
             
             print (EANcode)
+
+            # Download the image and save it to a file (and in the directory we created earlier)
+            image_response = requests.get(image)
+            with open(f'images/{EANcode}.jpg', 'wb') as f:
+                f.write(image_response.content)            
             
             try:
-                writer.writerow({'name': name, 'url': visit_url, 'image': image})
+                writer.writerow({'name': EANcode, 'url': visit_url})
             except UnicodeEncodeError:
                 print("Oopsie poopsie, I did a little woopsie")

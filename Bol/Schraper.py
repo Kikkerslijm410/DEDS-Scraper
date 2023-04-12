@@ -7,10 +7,6 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
 }
 
-# # Create a directory to store the downloaded images
-# if not os.path.exists('images'):
-#     os.makedirs('images')
-
 with open('Bol_com_reviews.csv', 'w', newline='', encoding='utf-16') as csvfile:
     fieldnames = ['name', 'price', 'url', 'image']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -32,12 +28,6 @@ with open('Bol_com_reviews.csv', 'w', newline='', encoding='utf-16') as csvfile:
             visit_url = f'https://www.bol.com{url}'
             print(name)
 
-            # # Download the image and save it to a file
-            # image_response = requests.get(image_url)
-            # with open(f'images/{name}.jpg', 'wb') as f:
-            #     f.write(image_response.content)
-            # needs a uniqe code without / and spaces
-            
             try:
                 writer.writerow({'name': name, 'price': price, 'url': visit_url, 'image': image})
             except UnicodeEncodeError:

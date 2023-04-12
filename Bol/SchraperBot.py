@@ -33,6 +33,6 @@ with open('Bol_com_reviews.csv', 'w', newline='', encoding='utf-16') as csvfile:
             for review_tag in review_tags:
                 review = review_tag.text.strip()
                 try:
-                    writer.writerow({'name': name, 'review': review.replace('\uFFFD', ''), 'image': image.replace('\uFFFD', '')})
+                    writer.writerow({'name': name, 'image': image.replace('\uFFFD', '')})
                 except UnicodeEncodeError:
                     print("Oopsie poopsie, I did a little woopsie")

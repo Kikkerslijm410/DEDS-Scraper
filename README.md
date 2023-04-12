@@ -9,3 +9,7 @@ In this repo there are 4 scrapers
 
 ## How to use
 Run the SchraperBot in each folder to scrap the reviews for the selected item (in this case backpacks)
+
+
+Note: the decathlon scraper is not working yet, it is still in development
+Note: the bol scraper is dogshit and slow, but it works. So take a snack and wait a day or two

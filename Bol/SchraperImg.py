@@ -12,7 +12,7 @@ if not os.path.exists('images'):
     os.makedirs('images')
 
 with open('Bol_com_images.csv', 'w', newline='', encoding='utf-16') as csvfile:
-    fieldnames = ['name', 'price', 'url', 'image']
+    fieldnames = ['name', 'image']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
 
@@ -43,7 +43,8 @@ with open('Bol_com_images.csv', 'w', newline='', encoding='utf-16') as csvfile:
             # Download the image and save it to a file (and in the directory we created earlier)
             image_response = requests.get(image)
             with open(f'images/{EANcode}.jpg', 'wb') as f:
-                f.write(image_response.content)            
+                f.write(image_response.content) 
+                # 1GB in porn........nah I got 1GB in backpacks images           
             
             try:
                 writer.writerow({'name': EANcode, 'url': visit_url})

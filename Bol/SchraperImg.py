@@ -12,7 +12,7 @@ if not os.path.exists('images'):
     os.makedirs('images')
 
 with open('Bol_com_images.csv', 'w', newline='', encoding='utf-16') as csvfile:
-    fieldnames = ['name', 'image']
+    fieldnames = ['name', 'url']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
 

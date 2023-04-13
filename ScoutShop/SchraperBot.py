@@ -1,7 +1,7 @@
 import pandas as pd
 import requests
 import re
-from bs4 import BeautifulSoup
+import os
 
 # so much code for so little results
 response = requests.get("https://www.scoutshop.nl/backpacks-en-tassen/tassen?product_list_limit=all")
@@ -12,6 +12,10 @@ reviews = []
 waardering = []
 productid = []
 wordcount = []
+
+# Create a directory to store the data
+if not os.path.exists('Output'):
+    os.makedirs('Output')
 
 for prodid in answer:
     response2 = requests.get("https://www.scoutshop.nl/review/product/listAjax/id/"+prodid)

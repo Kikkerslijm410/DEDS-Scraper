@@ -8,10 +8,14 @@ headers = {
 }
 
 # Create a directory to store the downloaded images
-if not os.path.exists('images'):
-    os.makedirs('images')
+if not os.path.exists('Images'):
+    os.makedirs('Images')
 
-with open('Bol_com_images2.csv', 'w', newline='', encoding='utf-16') as csvfile:
+# Create a directory to store the data
+if not os.path.exists('Output'):
+    os.makedirs('Output')
+
+with open('Output/Bol_com_images.csv', 'w', newline='', encoding='utf-16') as csvfile:
     fieldnames = ['name', 'url']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()

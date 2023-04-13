@@ -1,9 +1,14 @@
 from csv import writer
 import requests
 import json
+import os
 
-outfile = "data"
+outfile = "Output/Data"
 storageList = []
+
+# Create a directory to store the data
+if not os.path.exists('Output'):
+    os.makedirs('Output')
 
 #======File managment=======
 def BeverAPIWriteDataToJsonFile():

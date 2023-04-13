@@ -1,12 +1,17 @@
 import requests
 import csv
 from bs4 import BeautifulSoup
+import os
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
 }
 
-with open('Decathlon_com_reviews.csv', 'w', newline='') as csvfile:
+# Create a directory to store the data
+if not os.path.exists('Output'):
+    os.makedirs('Output')
+
+with open('Output/Decathlon_com_reviews.csv', 'w', newline='') as csvfile:
     fieldnames = ['name', 'price', 'url']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()

@@ -6,11 +6,16 @@ from selenium import webdriver
 from selenium.webdriver.firefox.options import Options 
 from selenium.webdriver.common.by import By
 import SchraperApi as BeverAPI
+import os
 
 url = "https://www.bever.nl/c/uitrusting/rugzakken/wandelrugzakken.html"
-outputfile = 'Beverbot.csv'
+outputfile = 'Output/Beverbot.csv'
 products = []
 productNrs = []
+
+# Create a directory to store the data
+if not os.path.exists('Output'):
+    os.makedirs('Output')
 
 def getBrowser():
     ffoptions = Options()

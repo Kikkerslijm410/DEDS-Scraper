@@ -9,13 +9,17 @@ headers = {
 }
 
 # Create a directory to store the downloaded images
-if not os.path.exists('images'):
-    os.makedirs('images')
+if not os.path.exists('Images'):
+    os.makedirs('Images')
+
+# Create a directory to store the data
+if not os.path.exists('Output'):
+    os.makedirs('Output')
 
 lock = threading.Lock()
 
 def get_images(start_page, end_page):
-    with open('Bol_com_images.csv', 'w', newline='', encoding='utf-16') as csvfile:
+    with open('Output/Bol_com_imagesThreaded.csv', 'w', newline='', encoding='utf-16') as csvfile:
         fieldnames = ['name', 'url']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()

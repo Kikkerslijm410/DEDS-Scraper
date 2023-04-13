@@ -1,1 +1,4 @@
-/images/
+/Images/
+__pycache__/
+geckodriver.log
+/OutputOld/Images/

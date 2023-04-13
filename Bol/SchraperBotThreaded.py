@@ -2,6 +2,7 @@ import requests
 import csv
 from bs4 import BeautifulSoup
 import threading
+import os
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
@@ -9,8 +10,12 @@ headers = {
 
 lock = threading.Lock()
 
+# Create a directory to store the data
+if not os.path.exists('Output'):
+    os.makedirs('Output')
+
 def get_reviews(start_page, end_page):
-    with open('Bol_com_reviews.csv', 'a', encoding='utf-8', newline='') as csvfile:
+    with open('Output/Bol_com_reviewsThreaded.csv', 'a', encoding='utf-8', newline='') as csvfile:
         fieldnames = ['name', 'review', 'image']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         if start_page == 1:

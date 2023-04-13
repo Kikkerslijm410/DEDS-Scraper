@@ -57,7 +57,7 @@ def get_images(start_page, end_page):
 
 threads = []
 num_pages = 500
-pages_per_thread = 50
+pages_per_thread = 500
 
 for i in range(0, num_pages, pages_per_thread):
     start_page = i+1

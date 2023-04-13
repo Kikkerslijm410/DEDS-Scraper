@@ -11,7 +11,7 @@ headers = {
 if not os.path.exists('images'):
     os.makedirs('images')
 
-with open('Bol_com_images.csv', 'w', newline='', encoding='utf-16') as csvfile:
+with open('Bol_com_images2.csv', 'w', newline='', encoding='utf-16') as csvfile:
     fieldnames = ['name', 'url']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
@@ -25,7 +25,6 @@ with open('Bol_com_images.csv', 'w', newline='', encoding='utf-16') as csvfile:
         product_tags = soup.find_all('li', {'class': 'product-item--column'})
 
         for tag in product_tags:
-            name = tag.find('span', {'class': 'truncate'}).text.strip()
             url = tag.find('a', {'class': 'hit-area-listpage'})['href']
             
             visit_url = f'https://www.bol.com{url}'
@@ -41,9 +40,9 @@ with open('Bol_com_images.csv', 'w', newline='', encoding='utf-16') as csvfile:
             print (EANcode)
 
             # Download the image and save it to a file (and in the directory we created earlier)
-            image_response = requests.get(image)
-            with open(f'images/{EANcode}.jpg', 'wb') as f:
-                f.write(image_response.content) 
+            # image_response = requests.get(image)
+            # with open(f'images/{EANcode}.jpg', 'wb') as f:
+            #     f.write(image_response.content) 
                 # 1GB in porn........nah I got 1GB in backpacks images           
             
             try:

@@ -48,7 +48,7 @@ def get_reviews(start_page, end_page):
                     if review_id not in seen_reviews:
                         with lock:
                             try:
-                                writer.writerow({'name': name, 'review': review.replace('\uFFFD', ''), 'image': image.replace('\uFFFD', '')})
+                                writer.writerow({'review': review.replace('\uFFFD', '')})
                                 seen_reviews.add(review_id)
                             except UnicodeEncodeError:
                                 print("Oopsie poopsie, I did a little woopsie")

@@ -4,15 +4,15 @@ import json
 import matplotlib.pyplot as plt
 from Database import (drop_table,conn,cursor,create_table)
 
-table_name = "SentimentAnalyse1"
-# drop_table(table_name)
+table_name = "SentimentAnalyse"
+drop_table(table_name)
 print ("INFO: Table dropped")
 create_table(table_name, "type","total")
 print ("INFO: Table 'SenitmentAnalyse' created")
 
 def insert_data(type, total ):
     cursor.execute(f"INSERT INTO {table_name} (type, total) VALUES (?, ?)", type, total)
-    print(f"{type} reviews: {total} (saved in db)")
+    print(f"{type} reviews: {total} (saved in database)")
     conn.commit()
     
 # Load word list from json file
@@ -24,8 +24,8 @@ def get_word_list(category):
 # Determine sentiment of a review
 def get_sentiment(review):
     review = re.sub('[^\w\s]', '', review).lower()
-    positive_words = get_word_list('Analyse/Woorden/positive_words')
-    negative_words = get_word_list('Analyse/Woorden/negative_words')
+    positive_words = get_word_list('Analyse/Woorden/Positive')
+    negative_words = get_word_list('Analyse/Woorden/Negative')
     words = review.split()
     positive_count = 0
     negative_count = 0
@@ -44,12 +44,13 @@ def get_sentiment(review):
 # Initialize sentiment counter
 reviews_sentiment = {"positive": 0, "negative": 0, "neutral": 0 }
 
-with open('Analyse/reviews2.csv', newline='', encoding='utf-8') as csvfile:
+with open('OutputOld/Reviews.csv', newline='', encoding='utf-16') as csvfile:
     reader = csv.reader(csvfile, delimiter=',', quotechar='"')
     next(reader) # skip the header row
     for row in reader:
-        if row[2]:    
-            sentiment = get_sentiment(row[2])
+        if row[1]:    
+            print (row[1])
+            sentiment = get_sentiment(row[1])
             reviews_sentiment[sentiment] += 1
 
 # Print sentiment counts

@@ -61,7 +61,7 @@ def most_common_colors(img_file):
     img_file = os.path.join("OutputOld/Images", img_file)
     colors = extcolors.extract_from_path(img_file, tolerance=12, limit=12)[0]
     color_counts = Counter(dict(colors)).most_common(4)
-    print(f" picture {img_file} is done")
+    print(f" Picture {img_file} is completed")
     del color_counts[0]
     return [color[0] for color in color_counts]
 
@@ -79,9 +79,9 @@ def main():
             colors_dict[color] = 1
     for color in colors_dict:
         insert_data(color, colors_dict[color])
-    print("Data has been saved in database")
+    print("INFO: Data saved in database")
 if __name__ == '__main__':
-    print("Analyse has been started")
+    print("INFO: Analysis has been started")
     main()
-    print("Analysis has ended")
+    print("INFO: Analysis has been completed")
 

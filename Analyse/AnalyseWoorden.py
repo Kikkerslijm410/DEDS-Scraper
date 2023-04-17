@@ -12,7 +12,7 @@ print ("INFO: Table 'PopularWords' created")
 # create a defaultdict to keep track of word counts
 words_with_count = defaultdict(int)
 
-with open('Analyse/reviews.csv', newline='', encoding='utf-16') as csvfile:
+with open('OutputOld/Reviews.csv', newline='', encoding='utf-16') as csvfile:
     reader = csv.reader(csvfile, delimiter=',', quotechar='"')
     next(reader) # skip the header row
     for row in reader:

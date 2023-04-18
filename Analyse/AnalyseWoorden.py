@@ -16,15 +16,11 @@ with open('OutputOld/Reviews.csv', newline='', encoding='utf-16') as csvfile:
     reader = csv.reader(csvfile, delimiter=',', quotechar='"')
     next(reader) # skip the header row
     for row in reader:
-        # extract the review title from the row
-        title = row[2]
-        # remove any non-letter characters, except spaces
-        title = re.sub(r'[^a-zA-Z\s]', '', title)
-        # split the title into individual words
-        words = title.split()
-        # iterate over each word in the title and increment its count in the defaultdict
+        review = row[2]
+        review = re.sub(r'[^a-zA-Z\s]', '', review)
+        words = review.split()
         for word in words:
             words_with_count[word] += 1
 for word in words_with_count:
     insert_word(table_name,word, words_with_count[word])
-print("Analysis has been completed and the analyzed data has been saved in the database.")
+print("INFO: Analysis has been completed, data is saved in the database.")

@@ -24,8 +24,8 @@ def get_word_list(category):
 # Determine sentiment of a review
 def get_sentiment(review):
     review = re.sub('[^\w\s]', '', review).lower()
-    positive_words = get_word_list('Analyse/Woorden/Positive')
-    negative_words = get_word_list('Analyse/Woorden/Negative')
+    positive_words = get_word_list('Analyse/Words/Positive')
+    negative_words = get_word_list('Analyse/Words/Negative')
     words = review.split()
     positive_count = 0
     negative_count = 0

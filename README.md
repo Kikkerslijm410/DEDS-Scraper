@@ -28,5 +28,6 @@ In this repo there are 3 analysis
 3. Make sure you have images ready in the `Images` folder
 4. Make sure you have the database ready
 5. Make sure you have reviews ready in the `OutputOld` folder (you can change the path)
-6. Run the analysis of your choice (Analysis.py)
-7. The output will be saved in the database
+6. Make sure you have the correct row numbers in the `Analysis.py` file
+7. Run the analysis of your choice (Analysis.py)
+8. The output will be saved in the database

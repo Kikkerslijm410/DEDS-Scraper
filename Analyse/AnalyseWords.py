@@ -16,7 +16,7 @@ with open('OutputOld/Reviews.csv', newline='', encoding='utf-16') as csvfile:
     reader = csv.reader(csvfile, delimiter=',', quotechar='"')
     next(reader) # skip the header row
     for row in reader:
-        review = row[2]
+        review = row[1]
         review = re.sub(r'[^a-zA-Z\s]', '', review)
         words = review.split()
         for word in words:
